@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:kodepos/src/model/item_address_value.dart';
 import 'package:kodepos/src/style/colors.dart';
 import 'package:kodepos/src/style/dimens.dart';
@@ -27,6 +26,8 @@ class AddressInputField extends StatefulWidget {
   final BoxDecoration? boxDecorationSelected;
   final bool hidePrefixOnSelected;
   final Widget? resetIcon;
+  final TextStyle? textStyle;
+  final TextStyle? inputTextStyle;
 
   const AddressInputField(
       {super.key,
@@ -40,6 +41,7 @@ class AddressInputField extends StatefulWidget {
       this.hidePrefixOnSelected = false,
       this.inputDecoration,
       this.inputDecorationSelected,
+      this.textStyle,
       this.boxDecoration,
       this.boxDecorationSelected,
       this.prefixWidget,
@@ -47,6 +49,7 @@ class AddressInputField extends StatefulWidget {
       this.backgroundColor,
       this.resetIcon,
       this.inputDelay = 500,
+      this.inputTextStyle,
       required this.addressList,
       this.actionButton});
 
@@ -167,10 +170,11 @@ class AddressInputFieldState extends State<AddressInputField> {
           Container(
             margin: const EdgeInsets.only(bottom: AppDimens.insideHalfPadding),
             child: Text(widget.title!,
-                style: GoogleFonts.plusJakartaSans(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: AppColors.instance.getFormTitleColor())),
+                style: widget.textStyle ??
+                    TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: AppColors.instance.getFormTitleColor())),
           ),
         Container(
             decoration: _getBoxDecoration(widget.isAddressSelected),
@@ -317,10 +321,11 @@ class AddressInputFieldState extends State<AddressInputField> {
       InputDecoration(
         hintText: hint,
         counterText: counterText, // Hilangkan default counter text
-        hintStyle: GoogleFonts.plusJakartaSans(
-            color: AppColors.instance.getHintColor(),
-            fontSize: 16,
-            fontWeight: FontWeight.w400),
+        hintStyle: widget.inputTextStyle ??
+            TextStyle(
+                color: AppColors.instance.getHintColor(),
+                fontSize: 16,
+                fontWeight: FontWeight.w400),
         icon: icon,
         fillColor: Colors.transparent,
         filled: true,

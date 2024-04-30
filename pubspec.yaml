@@ -1,6 +1,6 @@
 name: kodepos
-description: "Package Flutter for get data postal code / zip code in Indonesia."
-version: 0.0.2
+description: "Package Flutter for get the data of postal code / zip code in Indonesia."
+version: 0.0.3
 homepage: https://c0deslinger.github.io
 
 
@@ -11,9 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   get: ^4.6.6
-  google_fonts: ^4.0.3
 
 kodepos:
   git:
