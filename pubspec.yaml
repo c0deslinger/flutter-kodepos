@@ -15,6 +15,11 @@ dependencies:
   get: ^4.6.6
   google_fonts: ^4.0.3
 
+kodepos:
+  git:
+    url: git@github.com:c0deslinger/flutter-kodepos.git
+    ref: main
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
