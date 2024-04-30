@@ -86,36 +86,6 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Image.asset(
-          //   "packages/kodepos/assets/images/paperplay.png",
-          //   width: 20,
-          //   height: 20,
-          // ),
-          // Image.asset(
-          //   "packages/kodepos/lib/assets/images/paperplay.png",
-          //   width: 20,
-          //   height: 20,
-          // ),
-          // Image.asset(
-          //   "packages/kodepos/assets/images/paperplay.png",
-          //   width: 20,
-          //   height: 20,
-          // ),
-          // Image.asset(
-          //   "packages/lib/kodepos/assets/images/paperplay.png",
-          //   width: 20,
-          //   height: 20,
-          // ),
-          // Image.asset(
-          //   "assets/images/paperplay.png",
-          //   width: 20,
-          //   height: 20,
-          // ),
-          // Image.asset(
-          //   "lib/assets/images/paperplay.png",
-          //   width: 20,
-          //   height: 20,
-          // ),
           Container(
             margin: EdgeInsets.only(bottom: widget.marginBottom),
             child: AddressInputField(

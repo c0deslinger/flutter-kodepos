@@ -27,18 +27,14 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    # - packages/kodepos/lib/assets/csv/
-    # - packages/kodepos/lib/assets/csv/postal/
-    # - packages/kodepos/lib/assets/csv/subdis/
-    # - packages/kodepos/lib/assets/images/
-    - packages/kodepos/assets/csv/
-    - packages/kodepos/assets/csv/postal/
-    - packages/kodepos/assets/csv/subdis/
-    - packages/kodepos/assets/images/
-    # - assets/csv/
-    # - assets/csv/postal/
-    # - assets/csv/subdis/
-    # - lib/assets/images/
+    # - packages/kodepos/assets/csv/
+    # - packages/kodepos/assets/csv/postal/
+    # - packages/kodepos/assets/csv/subdis/
+    # - packages/kodepos/assets/images/
+    - assets/images/
+    - assets/csv/
+    - assets/csv/postal/
+    - assets/csv/subdis/
 
   # To add assets to your package, add an assets section, like this:
   # assets:
