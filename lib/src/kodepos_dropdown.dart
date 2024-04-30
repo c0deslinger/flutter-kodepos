@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kodepos/src/address_input_field.dart';
-import 'package:kodepos/src/controller/address_controller.dart';
+import 'package:kodepos/src/controller/kodepos_controller.dart';
 import 'package:kodepos/src/model/address_value.dart';
 
 /// KodeposDropdown is a widget that provides a dropdown list of Indonesian provinces, cities, districts, and subdistricts.
-/// It requires [AddressController] to manage the list of provinces, cities, districts, and subdistricts.
+/// It requires [KodeposController] to manage the list of provinces, cities, districts, and subdistricts.
 /// It also requires [AddressInputField] to display the dropdown list.
 class KodeposDropdown extends StatefulWidget {
   final String? provinceTitle;
@@ -75,13 +75,13 @@ class KodeposDropdown extends StatefulWidget {
 class _KodeposDropdownState extends State<KodeposDropdown> {
   @override
   void initState() {
-    Get.put(AddressController(), permanent: true);
+    Get.put(KodeposController(), permanent: true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AddressController>(builder: (addressController) {
+    return GetBuilder<KodeposController>(builder: (addressController) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -218,7 +218,11 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 onSelected: (address) async {
                   addressController.selectedSubdistrict = address;
                   addressController.selectedPostalCode =
-                      await addressController.getPostalCode() ?? "-";
+                      await addressController.getPostalCode(
+                              addressController.selectedCity!.id,
+                              addressController.selectedDistrict!.id,
+                              addressController.selectedSubdistrict!.id) ??
+                          "-";
                   addressController.update();
                   if (widget.onCompleted != null) {
                     AddressValue result = AddressValue(

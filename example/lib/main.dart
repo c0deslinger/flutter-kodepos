@@ -1,4 +1,5 @@
 import 'package:example/kodepos_dropdown_example.dart';
+import 'package:example/kodepos_get_data_example.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -88,7 +89,15 @@ class _MyHomePageState extends State<MyHomePage> {
                           builder: (context) =>
                               const KodeposDropdownExample()));
                 },
-                child: const Text("Kodepos Dropdown Example"))
+                child: const Text("Kodepos Dropdown Widget Example")),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const KodeposGetDataExample()));
+                },
+                child: const Text("Kodepos Get Data Example"))
           ],
         ),
       ),
