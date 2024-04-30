@@ -131,7 +131,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
               margin: EdgeInsets.only(bottom: widget.marginBottom),
               child: AddressInputField(
                 title: widget.cityTitle,
-                hint: widget.cityHint ?? "Cari nama kota",
+                hint: widget.cityHint ?? "Cari nama kota / kabupaten",
                 isAddressSelected: addressController.selectedCity != null,
                 addressList: addressController.city,
                 addressController: addressController.cityController,
