@@ -136,7 +136,7 @@ class _KodeposDropdownExampleState extends State<KodeposDropdownExample> {
 ```
 ### Example of KodeposMixin
 Use this if you only need the data 
-```
+```dart
 import 'package:flutter/material.dart';
 import 'package:kodepos/kodepos.dart';
 
