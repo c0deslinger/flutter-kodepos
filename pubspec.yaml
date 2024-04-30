@@ -17,7 +17,7 @@ dependencies:
 
 kodepos:
   git:
-    url: git@github.com:c0deslinger/flutter-kodepos.git
+    url: git@github.com:c0deslinger/flutter-lib-kodepos.git
     ref: main
 
 dev_dependencies:
