@@ -24,7 +24,6 @@ class _KodeposDropdownExampleState extends State<KodeposDropdownExample> {
             children: [
               KodeposDropdown(
                 prefixDropdownLabelProvince: "Provinsi ",
-                prefixDropdownLabelCity: "Kota ",
                 marginBottom: 0,
                 selectedBoxDecoration: const BoxDecoration(),
                 selectedPrefixWidgetProvince:

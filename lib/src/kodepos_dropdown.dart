@@ -136,7 +136,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 addressList: addressController.city,
                 addressController: addressController.cityController,
                 prefixWidget: widget.inputPrefixWidget,
-                prefixDropdownLabel: widget.prefixDropdownLabelCity ?? "Kota ",
+                prefixDropdownLabel: widget.prefixDropdownLabelCity ?? "",
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
                 selectedPrefixWidget: widget.selectedPrefixWidgetCity,
@@ -174,8 +174,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 addressList: addressController.district,
                 addressController: addressController.districtController,
                 selectedPrefixWidget: widget.selectedPrefixWidgetDistrict,
-                prefixDropdownLabel:
-                    widget.prefixDropdownLabelDistrict ?? "Kec. ",
+                prefixDropdownLabel: widget.prefixDropdownLabelDistrict ?? "",
                 prefixWidget: widget.inputPrefixWidget,
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
@@ -212,7 +211,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 addressController: addressController.subdistrictController,
                 selectedPrefixWidget: widget.selectedPrefixWidgetSubdistrict,
                 prefixDropdownLabel:
-                    widget.prefixDropdownLabelSubdistrict ?? "Desa ",
+                    widget.prefixDropdownLabelSubdistrict ?? "",
                 prefixWidget: widget.inputPrefixWidget,
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
