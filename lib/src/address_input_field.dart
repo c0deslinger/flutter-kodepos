@@ -223,11 +223,9 @@ class AddressInputFieldState extends State<AddressInputField> {
                               width: 10,
                               height: 8,
                               child: CircularProgressIndicator(strokeWidth: 2))
-                          : Row(
-                              children: [
-                                const SizedBox(width: 8),
-                                widget.actionButton!
-                              ],
+                          : Container(
+                              margin: const EdgeInsets.only(left: 8),
+                              child: widget.actionButton!,
                             )
                 ],
               ),

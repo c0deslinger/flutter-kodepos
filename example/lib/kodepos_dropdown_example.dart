@@ -26,6 +26,10 @@ class _KodeposDropdownExampleState extends State<KodeposDropdownExample> {
                 prefixDropdownLabelProvince: "Provinsi ",
                 marginBottom: 0,
                 selectedBoxDecoration: const BoxDecoration(),
+                // selectedProvince: ItemAddressValue("15", "JAWA TIMUR"),
+                // selectedCity: ItemAddressValue("232", "MALANG"),
+                // selectedDistrict: ItemAddressValue("3267", "KARANGPLOSO"),
+                // selectedSubdistrict: ItemAddressValue("40245", "AMPELDENTO"),
                 selectedPrefixWidgetProvince:
                     createPrefixWidget(isFirstItem: true),
                 selectedPrefixWidgetCity: createPrefixWidget(),

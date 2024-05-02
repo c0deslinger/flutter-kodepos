@@ -28,6 +28,22 @@ class KodeposController extends GetxController {
     listOfProvince();
   }
 
+  void reset() {
+    selectedCity = null;
+    selectedDistrict = null;
+    selectedProvince = null;
+    selectedSubdistrict = null;
+    selectedPostalCode = "";
+    provinceController.clear();
+    cityController.clear();
+    districtController.clear();
+    subdistrictController.clear();
+    city.clear();
+    district.clear();
+    subdistrict.clear();
+    update();
+  }
+
   Future<List<ItemAddressValue>?> listOfProvince(
       {bool printDebug = false}) async {
     try {
@@ -124,8 +140,8 @@ class KodeposController extends GetxController {
   Future<String?> getPostalCode(
       String cityId, String districtId, String subdistrictId) async {
     try {
-      String csvString = await rootBundle.loadString(
-          'packages/kodepos/assets/csv/postal/postal_${cityId}.csv');
+      String csvString = await rootBundle
+          .loadString('packages/kodepos/assets/csv/postal/postal_$cityId.csv');
       List<String> csvList = csvString.split('\n');
       String postalCode = "";
       for (var element in csvList) {
@@ -141,5 +157,24 @@ class KodeposController extends GetxController {
       debugPrint('Error get postal code: $e');
     }
     return null;
+  }
+
+  void checkSelectedAtFirst({
+    ItemAddressValue? selectedProvince,
+    ItemAddressValue? selectedCity,
+    ItemAddressValue? selectedDistrict,
+    ItemAddressValue? selectedSubdistrict,
+  }) {
+    Future.delayed(Duration(milliseconds: 100), () {
+      selectedProvince = selectedProvince;
+      provinceController.text = selectedProvince?.name ?? "";
+      selectedCity = selectedCity;
+      cityController.text = selectedCity?.name ?? "";
+      selectedDistrict = selectedDistrict;
+      districtController.text = selectedDistrict?.name ?? "";
+      selectedSubdistrict = selectedSubdistrict;
+      subdistrictController.text = selectedSubdistrict?.name ?? "";
+      update();
+    });
   }
 }

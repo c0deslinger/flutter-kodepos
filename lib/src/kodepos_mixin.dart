@@ -5,8 +5,7 @@ import 'package:kodepos/src/model/item_address_value.dart';
 /// Kodepos mixin
 /// Used to get data from kodepos
 mixin KodeposMixin {
-  KodeposController kodeposController =
-      Get.put(KodeposController(), permanent: true);
+  KodeposController kodeposController = Get.put(KodeposController());
 
   /// Get list of province
   /// Return list of province

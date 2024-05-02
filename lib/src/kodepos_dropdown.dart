@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kodepos/kodepos.dart';
 import 'package:kodepos/src/address_input_field.dart';
 import 'package:kodepos/src/controller/kodepos_controller.dart';
 import 'package:kodepos/src/model/address_value.dart';
@@ -36,6 +37,14 @@ class KodeposDropdown extends StatefulWidget {
   final Widget? selectedPrefixWidgetCity;
   final Widget? selectedPrefixWidgetDistrict;
   final Widget? selectedPrefixWidgetSubdistrict;
+  final ItemAddressValue? selectedProvince;
+  final ItemAddressValue? selectedCity;
+  final ItemAddressValue? selectedDistrict;
+  final ItemAddressValue? selectedSubdistrict;
+  final Widget? suffixProvinceWidget;
+  final Widget? suffixCityWidget;
+  final Widget? suffixDistrictWidget;
+  final Widget? suffixSubdistrictWidget;
 
   const KodeposDropdown(
       {super.key,
@@ -66,6 +75,14 @@ class KodeposDropdown extends StatefulWidget {
       this.selectedPrefixWidgetProvince,
       this.selectedPrefixWidgetSubdistrict,
       this.selectedBoxDecoration,
+      this.selectedProvince,
+      this.selectedCity,
+      this.selectedDistrict,
+      this.selectedSubdistrict,
+      this.suffixProvinceWidget,
+      this.suffixCityWidget,
+      this.suffixDistrictWidget,
+      this.suffixSubdistrictWidget,
       this.onCompleted});
 
   @override
@@ -73,10 +90,63 @@ class KodeposDropdown extends StatefulWidget {
 }
 
 class _KodeposDropdownState extends State<KodeposDropdown> {
+  KodeposController kodeposController = Get.put(KodeposController());
   @override
   void initState() {
-    Get.put(KodeposController(), permanent: true);
+    // Future.delayed(const Duration(milliseconds: 10), () {
+    //   kodeposController.checkSelectedAtFirst(
+    //       selectedProvince: widget.selectedProvince,
+    //       selectedCity: widget.selectedCity,
+    //       selectedDistrict: widget.selectedDistrict,
+    //       selectedSubdistrict: widget.selectedSubdistrict);
+    // });
     super.initState();
+    if (widget.selectedProvince != null) {
+      Future.delayed(const Duration(milliseconds: 10), () {
+        kodeposController.selectedProvince = widget.selectedProvince;
+        kodeposController.provinceController.text =
+            widget.selectedProvince!.name;
+        kodeposController.listOfCity(widget.selectedProvince!.id);
+        kodeposController.update();
+      });
+    }
+    if (widget.selectedCity != null) {
+      Future.delayed(const Duration(milliseconds: 10), () {
+        kodeposController.selectedCity = widget.selectedCity;
+        kodeposController.cityController.text = widget.selectedCity!.name;
+        kodeposController.listOfDistrict(widget.selectedCity!.id);
+        kodeposController.update();
+      });
+    }
+    if (widget.selectedDistrict != null) {
+      Future.delayed(const Duration(milliseconds: 10), () {
+        kodeposController.selectedDistrict = widget.selectedDistrict;
+        kodeposController.districtController.text =
+            widget.selectedDistrict!.name;
+        kodeposController.listOfSubdistrict(widget.selectedDistrict!.id);
+        kodeposController.update();
+      });
+    }
+    if (widget.selectedSubdistrict != null) {
+      Future.delayed(const Duration(milliseconds: 10), () async {
+        kodeposController.selectedSubdistrict = widget.selectedSubdistrict;
+        kodeposController.subdistrictController.text =
+            widget.selectedSubdistrict!.name;
+        kodeposController.selectedPostalCode =
+            await kodeposController.getPostalCode(
+                    widget.selectedCity?.id ?? "1",
+                    widget.selectedDistrict?.id ?? "1",
+                    widget.selectedSubdistrict?.id ?? "1") ??
+                "";
+        kodeposController.update();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    kodeposController.reset();
   }
 
   @override
@@ -105,6 +175,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 addressController.selectedProvince = address;
                 addressController.update();
               },
+              actionButton: widget.suffixProvinceWidget,
               inputDecoration: widget.inputDecoration,
               inputDecorationSelected: widget.selectedInputDecoration,
               onReset: () {
@@ -140,6 +211,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
                 selectedPrefixWidget: widget.selectedPrefixWidgetCity,
+                actionButton: widget.suffixCityWidget,
                 onSelected: (address) {
                   addressController.selectedCity = address;
                   addressController.update();
@@ -178,6 +250,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 prefixWidget: widget.inputPrefixWidget,
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
+                actionButton: widget.suffixDistrictWidget,
                 onSelected: (address) {
                   addressController.selectedDistrict = address;
                   addressController.update();
@@ -215,6 +288,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 prefixWidget: widget.inputPrefixWidget,
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
+                actionButton: widget.suffixSubdistrictWidget,
                 onSelected: (address) async {
                   addressController.selectedSubdistrict = address;
                   addressController.selectedPostalCode =
