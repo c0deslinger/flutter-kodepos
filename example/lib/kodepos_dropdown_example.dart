@@ -30,6 +30,7 @@ class _KodeposDropdownExampleState extends State<KodeposDropdownExample> {
                 // selectedCity: ItemAddressValue("232", "MALANG"),
                 // selectedDistrict: ItemAddressValue("3267", "KARANGPLOSO"),
                 // selectedSubdistrict: ItemAddressValue("40245", "AMPELDENTO"),
+                suffixProvinceWidget: Icon(Icons.arrow_drop_down),
                 selectedPrefixWidgetProvince:
                     createPrefixWidget(isFirstItem: true),
                 selectedPrefixWidgetCity: createPrefixWidget(),

@@ -175,7 +175,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 addressController.selectedProvince = address;
                 addressController.update();
               },
-              actionButton: widget.suffixProvinceWidget,
+              suffixWidget: widget.suffixProvinceWidget,
               inputDecoration: widget.inputDecoration,
               inputDecorationSelected: widget.selectedInputDecoration,
               onReset: () {
@@ -211,7 +211,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
                 selectedPrefixWidget: widget.selectedPrefixWidgetCity,
-                actionButton: widget.suffixCityWidget,
+                suffixWidget: widget.suffixCityWidget,
                 onSelected: (address) {
                   addressController.selectedCity = address;
                   addressController.update();
@@ -250,7 +250,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 prefixWidget: widget.inputPrefixWidget,
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
-                actionButton: widget.suffixDistrictWidget,
+                suffixWidget: widget.suffixDistrictWidget,
                 onSelected: (address) {
                   addressController.selectedDistrict = address;
                   addressController.update();
@@ -288,7 +288,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 prefixWidget: widget.inputPrefixWidget,
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
-                actionButton: widget.suffixSubdistrictWidget,
+                suffixWidget: widget.suffixSubdistrictWidget,
                 onSelected: (address) async {
                   addressController.selectedSubdistrict = address;
                   addressController.selectedPostalCode =

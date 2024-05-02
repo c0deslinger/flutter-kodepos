@@ -9,7 +9,7 @@ import 'package:kodepos/src/style/dimens.dart';
 class AddressInputField extends StatefulWidget {
   final String? title;
   final String hint;
-  final Widget? actionButton;
+  final Widget? suffixWidget;
   final Widget? prefixWidget;
   final Widget? selectedPrefixWidget;
   final String prefixDropdownLabel;
@@ -51,7 +51,7 @@ class AddressInputField extends StatefulWidget {
       this.inputDelay = 500,
       this.inputTextStyle,
       required this.addressList,
-      this.actionButton});
+      this.suffixWidget});
 
   @override
   AddressInputFieldState createState() => AddressInputFieldState();
@@ -193,6 +193,15 @@ class AddressInputFieldState extends State<AddressInputField> {
                           TextStyle(color: AppColors.instance.getTitleColor()),
                     ),
                   ),
+                  if (widget.suffixWidget != null && !widget.isAddressSelected)
+                    isLoading
+                        ? const SizedBox(
+                            width: 10,
+                            height: 8,
+                            child: CircularProgressIndicator(strokeWidth: 2))
+                        : Container(
+                            margin: const EdgeInsets.only(left: 8),
+                            child: widget.suffixWidget!),
                   (widget.isAddressSelected)
                       ? InkWell(
                           onTap: () {
@@ -216,17 +225,6 @@ class AddressInputFieldState extends State<AddressInputField> {
                                     : AppColors.greyBase3),
                           ),
                         ),
-                  widget.actionButton == null
-                      ? Container()
-                      : isLoading
-                          ? const SizedBox(
-                              width: 10,
-                              height: 8,
-                              child: CircularProgressIndicator(strokeWidth: 2))
-                          : Container(
-                              margin: const EdgeInsets.only(left: 8),
-                              child: widget.actionButton!,
-                            )
                 ],
               ),
             )),
