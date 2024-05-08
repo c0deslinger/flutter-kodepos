@@ -185,7 +185,7 @@ class KodeposController extends GetxController {
     ItemAddressValue? selectedDistrict,
     ItemAddressValue? selectedSubdistrict,
   }) {
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       selectedProvince = selectedProvince;
       provinceController.text = selectedProvince?.name ?? "";
       selectedCity = selectedCity;
