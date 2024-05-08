@@ -71,7 +71,16 @@ class AddressInputFieldState extends State<AddressInputField> {
     widget.addressController.addListener(() {
       onChange();
     });
-    addressList.addAll(widget.addressList);
+    initAddress();
+  }
+
+  /// Init address
+  /// Add all address list to [addressList]
+  /// Delay 100ms to avoid lagging
+  void initAddress() async {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      addressList.addAll(widget.addressList);
+    });
   }
 
   /// On value change
@@ -263,10 +272,10 @@ class AddressInputFieldState extends State<AddressInputField> {
                         padding: const EdgeInsets.symmetric(horizontal: 0),
                         itemCount: addressList.length,
                         itemBuilder: (context, index) {
-                          final desc = addressList[index].name;
+                          final name = addressList[index].name;
                           return InkWell(
                             onTap: () async {
-                              widget.addressController.text = desc;
+                              widget.addressController.text = name;
                               widget.onSelected(addressList[index]);
                               isSuggestionsVisible.value = false;
                             },
@@ -280,7 +289,7 @@ class AddressInputFieldState extends State<AddressInputField> {
                                       _getPrefixDropdownItemWidget(),
                                       Expanded(
                                         child: Text(
-                                          widget.prefixDropdownLabel + desc,
+                                          widget.prefixDropdownLabel + name,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyMedium
