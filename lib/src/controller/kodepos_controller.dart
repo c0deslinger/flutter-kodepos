@@ -4,6 +4,8 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import '../model/item_address_value.dart';
 
+enum AddressDataState { init, loading, loaded, error }
+
 class KodeposController extends GetxController {
   List<ItemAddressValue> provinces = [];
   List<ItemAddressValue> city = [];
@@ -21,6 +23,11 @@ class KodeposController extends GetxController {
   ItemAddressValue? selectedSubdistrict;
 
   String selectedPostalCode = "";
+
+  AddressDataState provinceState = AddressDataState.init;
+  AddressDataState cityState = AddressDataState.init;
+  AddressDataState districtState = AddressDataState.init;
+  AddressDataState subdistrictState = AddressDataState.init;
 
   @override
   void onInit() {
@@ -47,6 +54,8 @@ class KodeposController extends GetxController {
   Future<List<ItemAddressValue>?> listOfProvince(
       {bool printDebug = false}) async {
     try {
+      provinceState = AddressDataState.loading;
+      update();
       String csvString = await rootBundle
           .loadString('packages/kodepos/assets/csv/province.csv');
       List<String> csvList = csvString.split('\n');
@@ -58,16 +67,20 @@ class KodeposController extends GetxController {
       if (printDebug) {
         debugPrint('Provinces: ${provinces.length}');
       }
-      update();
+      provinceState = AddressDataState.loaded;
     } catch (e) {
+      provinceState = AddressDataState.error;
       debugPrint('Error loading provinces: $e');
     }
+    update();
     return provinces;
   }
 
   Future<List<ItemAddressValue>?> listOfCity(String provinceId,
       {bool printDebug = false}) async {
     try {
+      cityState = AddressDataState.loading;
+      update();
       String csvString =
           await rootBundle.loadString('packages/kodepos/assets/csv/city.csv');
       List<String> csvList = csvString.split('\n');
@@ -82,16 +95,19 @@ class KodeposController extends GetxController {
       if (printDebug) {
         debugPrint('City: ${city.length}');
       }
-      update();
+      cityState = AddressDataState.loaded;
     } catch (e) {
       debugPrint('Error loading cities: $e');
     }
+    update();
     return city;
   }
 
   Future<List<ItemAddressValue>?> listOfDistrict(String cityId,
       {bool printDebug = false}) async {
     try {
+      districtState = AddressDataState.loading;
+      update();
       String csvString = await rootBundle
           .loadString('packages/kodepos/assets/csv/district.csv');
       List<String> csvList = csvString.split('\n');
@@ -106,16 +122,19 @@ class KodeposController extends GetxController {
       if (printDebug) {
         debugPrint('District: ${district.length}');
       }
-      update();
+      districtState = AddressDataState.loaded;
     } catch (e) {
       debugPrint('Error loading district: $e');
     }
+    update();
     return district;
   }
 
   Future<List<ItemAddressValue>?> listOfSubdistrict(String districtId,
       {bool printDebug = false}) async {
     try {
+      subdistrictState = AddressDataState.loading;
+      update();
       String csvString = await rootBundle.loadString(
           'packages/kodepos/assets/csv/subdis/subdis_$districtId.csv');
       List<String> csvList = csvString.split('\n');
@@ -130,10 +149,11 @@ class KodeposController extends GetxController {
       if (printDebug) {
         debugPrint('SubDistrict: ${district.length}');
       }
-      update();
+      subdistrictState = AddressDataState.loaded;
     } catch (e) {
       debugPrint('Error loading subdistrict: $e');
     }
+    update();
     return subdistrict;
   }
 

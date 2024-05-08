@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kodepos/src/controller/kodepos_controller.dart';
 import 'package:kodepos/src/model/item_address_value.dart';
 import 'package:kodepos/src/style/colors.dart';
 import 'package:kodepos/src/style/dimens.dart';
@@ -28,6 +29,7 @@ class AddressInputField extends StatefulWidget {
   final Widget? resetIcon;
   final TextStyle? textStyle;
   final TextStyle? inputTextStyle;
+  final AddressDataState? addressState;
 
   const AddressInputField(
       {super.key,
@@ -50,6 +52,7 @@ class AddressInputField extends StatefulWidget {
       this.resetIcon,
       this.inputDelay = 500,
       this.inputTextStyle,
+      this.addressState,
       required this.addressList,
       this.suffixWidget});
 
@@ -71,6 +74,7 @@ class AddressInputFieldState extends State<AddressInputField> {
     widget.addressController.addListener(() {
       onChange();
     });
+    // isLoading = widget.addressState == AddressDataState.loading;
     initAddress();
   }
 
@@ -172,144 +176,158 @@ class AddressInputFieldState extends State<AddressInputField> {
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (widget.title != null)
+    return GetBuilder<KodeposController>(builder: (controller) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (widget.title != null)
+            Container(
+              margin:
+                  const EdgeInsets.only(bottom: AppDimens.insideHalfPadding),
+              child: Text(widget.title!,
+                  style: widget.textStyle ??
+                      TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: AppColors.instance.getFormTitleColor())),
+            ),
           Container(
-            margin: const EdgeInsets.only(bottom: AppDimens.insideHalfPadding),
-            child: Text(widget.title!,
-                style: widget.textStyle ??
-                    TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: AppColors.instance.getFormTitleColor())),
-          ),
-        Container(
-            decoration: _getBoxDecoration(widget.isAddressSelected),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: IntrinsicHeight(
-              child: Row(
-                children: [
-                  _getPrefixWidget(isDarkMode: isDarkMode),
-                  Expanded(
-                    child: TextField(
-                      enabled: !isLoading && (!widget.isAddressSelected),
-                      controller: widget.addressController,
-                      decoration: _getInputDecoration(widget.isAddressSelected),
-                      onChanged: (value) {},
-                      style:
-                          TextStyle(color: AppColors.instance.getTitleColor()),
+              decoration: _getBoxDecoration(widget.isAddressSelected),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: IntrinsicHeight(
+                child: Row(
+                  children: [
+                    _getPrefixWidget(isDarkMode: isDarkMode),
+                    Expanded(
+                      child: TextField(
+                        enabled: !isLoading && (!widget.isAddressSelected),
+                        controller: widget.addressController,
+                        decoration:
+                            _getInputDecoration(widget.isAddressSelected),
+                        onChanged: (value) {},
+                        style: TextStyle(
+                            color: AppColors.instance.getTitleColor()),
+                      ),
+                    ),
+                    if (widget.suffixWidget != null &&
+                        !widget.isAddressSelected)
+                      isLoading
+                          ? const SizedBox(
+                              width: 10,
+                              height: 8,
+                              child: CircularProgressIndicator(strokeWidth: 2))
+                          : Container(
+                              margin: const EdgeInsets.only(left: 8),
+                              child: widget.suffixWidget!),
+                    (widget.isAddressSelected)
+                        ? InkWell(
+                            onTap: () {
+                              isSuggestionsVisible.value = false;
+                              widget.onReset();
+                            },
+                            child: _getResetIcon(isDarkMode: isDarkMode),
+                          )
+                        : Obx(
+                            () => InkWell(
+                              onTap: () {
+                                isSuggestionsVisible.value =
+                                    !isSuggestionsVisible.value;
+                                // if (widget.addressList.isEmpty) {
+                                //   Future.delayed(
+                                //       const Duration(milliseconds: 100), () {
+                                //     addressList.addAll(widget.addressList);
+                                //   });
+                                // }
+                                if (isSuggestionsVisible.value) {
+                                  onChange();
+                                }
+                              },
+                              child: Icon(
+                                  isSuggestionsVisible.value
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
+                                  color: isDarkMode
+                                      ? AppColors.primayGold
+                                      : AppColors.greyBase3),
+                            ),
+                          ),
+                  ],
+                ),
+              )),
+          Obx(
+            () => !isSuggestionsVisible.value
+                ? Container()
+                : Container(
+                    margin: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(16, 24, 40, 0.08),
+                            blurRadius: 16,
+                            spreadRadius: -4,
+                            offset: Offset(0, 12),
+                          ),
+                        ],
+                        color: AppColors.instance.getBgCardWhiteColor(),
+                        borderRadius: BorderRadius.circular(12),
+                        border: isDarkMode
+                            ? null
+                            : Border.all(color: AppColors.greyBase2)),
+                    height: addressList.length > 1 ? 180 : 60,
+                    child: RawScrollbar(
+                      controller: scrollController,
+                      thumbVisibility: true,
+                      radius: const Radius.circular(50),
+                      thumbColor: isDarkMode
+                          ? const Color(0xFF313157)
+                          : const Color(0xFFEAECF0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 4),
+                      child: ListView.builder(
+                          controller: scrollController,
+                          scrollDirection: Axis.vertical,
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
+                          itemCount: addressList.length,
+                          itemBuilder: (context, index) {
+                            final name = addressList[index].name;
+                            return InkWell(
+                              onTap: () async {
+                                widget.addressController.text = name;
+                                widget.onSelected(addressList[index]);
+                                isSuggestionsVisible.value = false;
+                              },
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 8),
+                                    child: Row(
+                                      children: [
+                                        _getPrefixDropdownItemWidget(),
+                                        Expanded(
+                                          child: Text(
+                                            widget.prefixDropdownLabel + name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                    color: AppColors.instance
+                                                        .getTitleColor()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                     ),
                   ),
-                  if (widget.suffixWidget != null && !widget.isAddressSelected)
-                    isLoading
-                        ? const SizedBox(
-                            width: 10,
-                            height: 8,
-                            child: CircularProgressIndicator(strokeWidth: 2))
-                        : Container(
-                            margin: const EdgeInsets.only(left: 8),
-                            child: widget.suffixWidget!),
-                  (widget.isAddressSelected)
-                      ? InkWell(
-                          onTap: () {
-                            isSuggestionsVisible.value = false;
-                            widget.onReset();
-                          },
-                          child: _getResetIcon(isDarkMode: isDarkMode),
-                        )
-                      : Obx(
-                          () => InkWell(
-                            onTap: () {
-                              isSuggestionsVisible.value =
-                                  !isSuggestionsVisible.value;
-                            },
-                            child: Icon(
-                                isSuggestionsVisible.value
-                                    ? Icons.keyboard_arrow_up
-                                    : Icons.keyboard_arrow_down,
-                                color: isDarkMode
-                                    ? AppColors.primayGold
-                                    : AppColors.greyBase3),
-                          ),
-                        ),
-                ],
-              ),
-            )),
-        Obx(
-          () => !isSuggestionsVisible.value
-              ? Container()
-              : Container(
-                  margin: const EdgeInsets.only(top: 8),
-                  decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(16, 24, 40, 0.08),
-                          blurRadius: 16,
-                          spreadRadius: -4,
-                          offset: Offset(0, 12),
-                        ),
-                      ],
-                      color: AppColors.instance.getBgCardWhiteColor(),
-                      borderRadius: BorderRadius.circular(12),
-                      border: isDarkMode
-                          ? null
-                          : Border.all(color: AppColors.greyBase2)),
-                  height: addressList.length > 1 ? 180 : 60,
-                  child: RawScrollbar(
-                    controller: scrollController,
-                    thumbVisibility: true,
-                    radius: const Radius.circular(50),
-                    thumbColor: isDarkMode
-                        ? const Color(0xFF313157)
-                        : const Color(0xFFEAECF0),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                    child: ListView.builder(
-                        controller: scrollController,
-                        scrollDirection: Axis.vertical,
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
-                        itemCount: addressList.length,
-                        itemBuilder: (context, index) {
-                          final name = addressList[index].name;
-                          return InkWell(
-                            onTap: () async {
-                              widget.addressController.text = name;
-                              widget.onSelected(addressList[index]);
-                              isSuggestionsVisible.value = false;
-                            },
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 8),
-                                  child: Row(
-                                    children: [
-                                      _getPrefixDropdownItemWidget(),
-                                      Expanded(
-                                        child: Text(
-                                          widget.prefixDropdownLabel + name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(
-                                                  color: AppColors.instance
-                                                      .getTitleColor()),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                  ),
-                ),
-        ),
-      ],
-    );
+          ),
+        ],
+      );
+    });
   }
 
   /// Input text field decoration

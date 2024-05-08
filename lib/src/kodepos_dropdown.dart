@@ -93,13 +93,6 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
   KodeposController kodeposController = Get.put(KodeposController());
   @override
   void initState() {
-    // Future.delayed(const Duration(milliseconds: 10), () {
-    //   kodeposController.checkSelectedAtFirst(
-    //       selectedProvince: widget.selectedProvince,
-    //       selectedCity: widget.selectedCity,
-    //       selectedDistrict: widget.selectedDistrict,
-    //       selectedSubdistrict: widget.selectedSubdistrict);
-    // });
     super.initState();
     if (widget.selectedProvince != null) {
       Future.delayed(const Duration(milliseconds: 10), () {
@@ -169,6 +162,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
               boxDecoration: widget.boxDecoration,
               boxDecorationSelected: widget.selectedBoxDecoration,
               selectedPrefixWidget: widget.selectedPrefixWidgetProvince,
+              addressState: addressController.provinceState,
               onSelected: (address) {
                 debugPrint(address.name);
                 addressController.listOfCity(address.id);
@@ -211,6 +205,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
                 selectedPrefixWidget: widget.selectedPrefixWidgetCity,
+                addressState: addressController.cityState,
                 suffixWidget: widget.suffixCityWidget,
                 onSelected: (address) {
                   addressController.selectedCity = address;
@@ -251,6 +246,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
                 suffixWidget: widget.suffixDistrictWidget,
+                addressState: addressController.districtState,
                 onSelected: (address) {
                   addressController.selectedDistrict = address;
                   addressController.update();
@@ -289,6 +285,7 @@ class _KodeposDropdownState extends State<KodeposDropdown> {
                 boxDecoration: widget.boxDecoration,
                 boxDecorationSelected: widget.selectedBoxDecoration,
                 suffixWidget: widget.suffixSubdistrictWidget,
+                addressState: addressController.subdistrictState,
                 onSelected: (address) async {
                   addressController.selectedSubdistrict = address;
                   addressController.selectedPostalCode =
