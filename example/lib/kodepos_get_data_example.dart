@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kodepos/kodepos.dart';
 
+/// A StatefulWidget that demonstrates how to use the Kodepos package to fetch
+/// and display address data such as provinces, cities, districts, and subdistricts.
 class KodeposGetDataExample extends StatefulWidget {
   const KodeposGetDataExample({super.key});
 

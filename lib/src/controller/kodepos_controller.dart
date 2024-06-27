@@ -4,8 +4,10 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import '../model/item_address_value.dart';
 
+/// Enum representing the state of address data loading.
 enum AddressDataState { init, loading, loaded, error }
 
+/// Controller for managing address data such as provinces, cities, districts, and subdistricts.
 class KodeposController extends GetxController {
   List<ItemAddressValue> provinces = [];
   List<ItemAddressValue> city = [];
@@ -35,6 +37,7 @@ class KodeposController extends GetxController {
     listOfProvince();
   }
 
+  /// Resets the selected address data and clears the controllers.
   void reset() {
     selectedCity = null;
     selectedDistrict = null;
@@ -51,6 +54,9 @@ class KodeposController extends GetxController {
     update();
   }
 
+  /// Fetches the list of provinces from a CSV file.
+  ///
+  /// [printDebug] if true, prints the number of provinces loaded.
   Future<List<ItemAddressValue>?> listOfProvince(
       {bool printDebug = false}) async {
     try {
@@ -76,6 +82,10 @@ class KodeposController extends GetxController {
     return provinces;
   }
 
+  /// Fetches the list of cities for a given province from a CSV file.
+  ///
+  /// [provinceId] the ID of the province.
+  /// [printDebug] if true, prints the number of cities loaded.
   Future<List<ItemAddressValue>?> listOfCity(String provinceId,
       {bool printDebug = false}) async {
     try {
@@ -103,6 +113,10 @@ class KodeposController extends GetxController {
     return city;
   }
 
+  /// Fetches the list of districts for a given city from a CSV file.
+  ///
+  /// [cityId] the ID of the city.
+  /// [printDebug] if true, prints the number of districts loaded.
   Future<List<ItemAddressValue>?> listOfDistrict(String cityId,
       {bool printDebug = false}) async {
     try {
@@ -130,6 +144,10 @@ class KodeposController extends GetxController {
     return district;
   }
 
+  /// Fetches the list of subdistricts for a given district from a CSV file.
+  ///
+  /// [districtId] the ID of the district.
+  /// [printDebug] if true, prints the number of subdistricts loaded.
   Future<List<ItemAddressValue>?> listOfSubdistrict(String districtId,
       {bool printDebug = false}) async {
     try {
@@ -157,6 +175,11 @@ class KodeposController extends GetxController {
     return subdistrict;
   }
 
+  /// Fetches the postal code for a given city, district, and subdistrict from a CSV file.
+  ///
+  /// [cityId] the ID of the city.
+  /// [districtId] the ID of the district.
+  /// [subdistrictId] the ID of the subdistrict.
   Future<String?> getPostalCode(
       String cityId, String districtId, String subdistrictId) async {
     try {
@@ -179,6 +202,12 @@ class KodeposController extends GetxController {
     return null;
   }
 
+  /// Checks and sets the selected address data at the start.
+  ///
+  /// [selectedProvince] the selected province.
+  /// [selectedCity] the selected city.
+  /// [selectedDistrict] the selected district.
+  /// [selectedSubdistrict] the selected subdistrict.
   void checkSelectedAtFirst({
     ItemAddressValue? selectedProvince,
     ItemAddressValue? selectedCity,
@@ -186,13 +215,13 @@ class KodeposController extends GetxController {
     ItemAddressValue? selectedSubdistrict,
   }) {
     Future.delayed(const Duration(milliseconds: 100), () {
-      selectedProvince = selectedProvince;
+      this.selectedProvince = selectedProvince;
       provinceController.text = selectedProvince?.name ?? "";
-      selectedCity = selectedCity;
+      this.selectedCity = selectedCity;
       cityController.text = selectedCity?.name ?? "";
-      selectedDistrict = selectedDistrict;
+      this.selectedDistrict = selectedDistrict;
       districtController.text = selectedDistrict?.name ?? "";
-      selectedSubdistrict = selectedSubdistrict;
+      this.selectedSubdistrict = selectedSubdistrict;
       subdistrictController.text = selectedSubdistrict?.name ?? "";
       update();
     });

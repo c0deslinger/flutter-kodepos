@@ -10,7 +10,10 @@
 
 * Bug Fix: Fix empty postal code at first init
 
-
 ## 0.0.7
 
 * Bug Fix: Fix empty address on selected parent
+
+## 0.0.8-beta.1
+
+* Update dependency: Update getx to 5.0.0-release-candidate-6
